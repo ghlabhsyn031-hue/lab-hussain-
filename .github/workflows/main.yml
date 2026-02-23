@@ -10,17 +10,22 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
     - uses: actions/checkout@v4
+
     - uses: actions/setup-python@v5
       with:
         python-version: '3.10'
-    - name: Install
+
+    - name: Install system deps
       run: |
         sudo apt-get update
-        sudo apt-get install -y git zip unzip python3-pip build-essential ccache libncurses5-dev libffi-dev libssl-dev openjdk-17-jdk zlib1g-dev libltdl-dev cmake ninja-build autoconf libtool python3-distutils
+        sudo apt-get install -y git zip unzip python3-pip build-essential ccache libncurses5-dev libffi-dev libssl-dev openjdk-17-jdk zlib1g-dev libltdl-dev cmake autoconf libtool python3-distutils aidl
         pip install --upgrade pip
         pip install buildozer cython==0.29.36
+
     - name: Build APK
-      run: buildozer -v android debug
+      run: |
+        yes | buildozer android debug
+
     - uses: actions/upload-artifact@v4
       with:
         name: Lab-APK
